@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>vue-video-controls</title>
+  <link rel="stylesheet" type="text/css" href="../src/vue-video-controls.css">
+</head>
+<body>
+  <style type="text/css">
+    body, html, #vue-mount {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <div id="vue-mount">
+    <video-controls class="main">
+      <video>
+        <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4">
+      </video>
+    </video-controls>
+  </div>
+
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../src/vue-video-controls.js"></script>
+
+</body>
+</html>
