@@ -3,7 +3,10 @@
 }
 
 .video-wrapper {
-  display: table;
+  height: 360px; /* This is not sustainable */
+
+  overflow: hidden;
+  display: inline-block;
 }
 
 .controls-wrapper {
@@ -11,6 +14,7 @@
   position: relative;
   background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
   transition: top 0.2s ease-out;
+  top: 0px;
 }
 
 .controls-wrapper.show {

@@ -1,14 +1,20 @@
 const template =
-`<div class="video-wrapper">
+`<div class="video-wrapper" v-on:mouseover="show = true" v-on:mouseleave="show = false">
 
   <slot></slot>
 
-  <div class="controls-wrapper show"></div>
+  <div class="controls-wrapper" v-bind:class="{ show: show }"></div>
  </div>`
 
 Vue.component('video-controls', {
 
-  template: template
+  template: template,
+
+  data () {
+    return {
+      show: false
+    };
+  }
 
 });
 
