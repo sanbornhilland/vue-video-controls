@@ -1,12 +1,17 @@
 const template =
-`<div class="video-wrapper"
-      v-on:mouseover="showControls"
-      v-on:mouseleave="hideControls"
-      v-on:click="togglePlay">
+`<div class="video-wrapper" @mouseover="showControls" @mouseleave="hideControls" @click="togglePlay">
 
   <slot></slot>
 
-  <div class="controls-wrapper" v-bind:class="{ show: show }"></div>
+  <div class="controls-wrapper" v-bind:class="{ show: show }">
+    <div class="progress-bar clickable">
+      <div class="progress-bar-total"></div>
+      <div class="progress-bar-buffered" :style="{ width: bufferedPercentage + '%' }"></div>
+      <div class="progress-bar-played" :style="{ width: playedPercentage + '%'}">
+        <div class="progress-bar-scrubber"></div>
+      </div>
+    </div>
+  </div>
  </div>`
 
 Vue.component('video-controls', {
@@ -18,14 +23,22 @@ Vue.component('video-controls', {
 
     window.video = this.video; // Attach for easy debugging.
 
-    video.addEventListener('play', this.hideControls);
+    // video.addEventListener('play', this.hideControls);
     video.addEventListener('pause', this.showControls);
+
+    // Seems a little blunt but timeupdate doesn't fire that
+    // often so this seems to produce a smoother slider.
+    setInterval(() => {
+      this.updatePlayedPercentage()
+    }, 100);
   },
 
   data () {
     return {
       show: true,
-      video: undefined
+      video: undefined,
+      playedPercentage: 0,
+      bufferedPercentage: 0
     }
   },
 
@@ -42,7 +55,22 @@ Vue.component('video-controls', {
     },
 
     togglePlay () {
-      this.video.paused ? this.video.play() : this.video.pause();
+      this.video.paused ? this.video.play() : this.video.pause()
+    },
+
+    updatePlayedPercentage () {
+      const progress = this.video.currentTime / this.video.duration
+      this.playedPercentage =  progress * 100
+    },
+
+    updateBufferedPercentage () {
+      try {
+        let progress = vid.buffered.end(0) / vid.duration
+      } catch (error) {
+        return
+      }
+
+      this.bufferedPercentage = progress * 100;
     }
   }
 
