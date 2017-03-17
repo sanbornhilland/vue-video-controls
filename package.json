@@ -1,0 +1,19 @@
+{
+  "name": "vue-video-controls",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "vue",
+    "vue.js",
+    "video"
+  ],
+  "author": "Sanborn Hilland",
+  "license": "ISC",
+  "devDependencies": {
+    "vue": "^2.2.4"
+  }
+}
