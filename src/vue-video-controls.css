@@ -81,3 +81,48 @@
   height: 18px;
   top: -12px; /* This appears to be required in FF but not Chrome */
 }
+
+.buttons {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: -15px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.buttons-left-side-wrapper, .buttons-right-side-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+.buttons-right-side-wrapper {
+  justify-content: flex-end;
+}
+
+.control-element-wrapper {
+  padding: 8px;
+}
+
+.play {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid white;
+}
+
+.pause::before, .pause::after {
+  content: '';
+  height: 20px;
+  width: 5px;
+  left: 5px;
+  top: 5px;
+  display: inline-block;
+  background-color: white;
+}
+
+.pause::after {
+  margin-left: 5px;
+}

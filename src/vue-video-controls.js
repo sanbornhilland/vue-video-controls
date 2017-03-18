@@ -11,6 +11,14 @@ const template =
         <div class="progress-bar-scrubber"></div>
       </div>
     </div>
+
+    <div class="buttons">
+      <div class="buttons-left-side-wrapper">
+        <div class="control-element-wrapper">
+          <div class="play-pause-button clickable" :class="video && video.paused ? 'play' : 'pause'"> </div>
+        </div>
+      </div>
+    </div>
   </div>
  </div>`
 
@@ -23,7 +31,6 @@ Vue.component('video-controls', {
 
     window.video = this.video; // Attach for easy debugging.
 
-    // video.addEventListener('play', this.hideControls);
     video.addEventListener('pause', this.showControls);
 
     // Seems a little blunt but timeupdate doesn't fire that
@@ -70,7 +77,7 @@ Vue.component('video-controls', {
         return
       }
 
-      this.bufferedPercentage = progress * 100;
+      this.bufferedPercentage = progress * 100
     }
   }
 
