@@ -26,6 +26,11 @@
   top: -65px;
 }
 
+
+
+
+/* PROGRESS BAR */
+
 .progress-bar {
   height: 25px;
   position: relative;
@@ -82,6 +87,8 @@
   top: -12px; /* This appears to be required in FF but not Chrome */
 }
 
+/* END PROGRESS BAR */
+
 .buttons {
   width: 100%;
   height: 100%;
@@ -92,7 +99,8 @@
   padding: 0 10px;
 }
 
-.buttons-left-side-wrapper, .buttons-right-side-wrapper {
+.buttons-left-side-wrapper,
+.buttons-right-side-wrapper {
   display: flex;
   flex-grow: 1;
 }
@@ -104,6 +112,11 @@
 .control-element-wrapper {
   padding: 8px;
 }
+
+
+
+
+/* PLAY/PAUSE BUTTON */
 
 .play {
   width: 0;
@@ -126,3 +139,56 @@
 .pause::after {
   margin-left: 5px;
 }
+
+/* END PLAY/PAUSE BUTTON */
+
+
+
+
+/* FULL SCREEN BUTTON */
+
+.fullscreen-wrapper {
+  right: 5;
+}
+
+.fullscreen {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+}
+
+.corner:nth-child(1) {
+  left: 0;
+  top: 0;
+  border-top: 3px solid white;
+  border-left: 3px solid white
+}
+
+.corner:nth-child(2) {
+  right: 0;
+  top: 0;
+  border-top: 3px solid white;
+  border-right: 3px solid white
+}
+
+.corner:nth-child(3) {
+  bottom: 0;
+  right: 0;
+  border-bottom: 3px solid white;
+  border-right: 3px solid white
+}
+
+.corner:nth-child(4) {
+  left: 0;
+  bottom: 0;
+  border-bottom: 3px solid white;
+  border-left: 3px solid white
+}
+
+/* END FULL SCREEN BUTTON */

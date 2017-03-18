@@ -13,11 +13,25 @@ const template =
     </div>
 
     <div class="buttons">
+
       <div class="buttons-left-side-wrapper">
+
         <div class="control-element-wrapper">
           <div class="play-pause-button clickable" :class="video && video.paused ? 'play' : 'pause'"> </div>
         </div>
+
       </div>
+
+      <div class="buttons-right-side-wrapper">
+
+        <div class="control-element-wrapper fullscreen-wrapper" @click="toggleFullscreen">
+          <div class="fullscreen clickable">
+            <div v-for="item in new Array(4)" class="corner"></div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
  </div>`
@@ -37,6 +51,7 @@ Vue.component('video-controls', {
     // often so this seems to produce a smoother slider.
     setInterval(() => {
       this.updatePlayedPercentage()
+      this.updateBufferedPercentage()
     }, 100);
   },
 
@@ -63,6 +78,19 @@ Vue.component('video-controls', {
 
     togglePlay () {
       this.video.paused ? this.video.play() : this.video.pause()
+    },
+
+    toggleFullscreen () {
+      if (document.fullscreenElement)
+        document.exitFullscreen()
+      else if (document.webkitFullscreenElement)
+        document.webkitExitFullscreen()
+      else if (this.$el.requestFullscreen)
+        this.$el.requestFullscreen()
+      else if (this.$el.webkitRequestFullscreen)
+        this.$el.webkitRequestFullscreen()
+      else
+        console.log('Your shitty half-baked polyfill doesn not work in this browser')
     },
 
     updatePlayedPercentage () {
