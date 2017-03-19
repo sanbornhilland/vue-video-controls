@@ -1,10 +1,10 @@
 const template =
-`<div class="video-wrapper" @mouseover="showControls" @mouseleave="hideControls" @click="togglePlay">
+`<div class="video-wrapper clickable" @mouseover="showControls" @mouseleave="hideControls" @click="togglePlay">
 
   <slot></slot>
 
-  <div class="controls-wrapper" v-bind:class="{ show: show }">
-    <div class="progress-bar clickable">
+  <div class="controls-wrapper" v-bind:class="{ show: show }" @click.stop="">
+    <div class="progress-bar clickable" @click="seek($event)">
       <div class="progress-bar-total"></div>
       <div class="progress-bar-buffered" :style="{ width: bufferedPercentage + '%' }"></div>
       <div class="progress-bar-played" :style="{ width: playedPercentage + '%'}">
@@ -17,7 +17,10 @@ const template =
       <div class="buttons-left-side-wrapper">
 
         <div class="control-element-wrapper">
-          <div class="play-pause-button clickable" :class="video && video.paused ? 'play' : 'pause'"> </div>
+          <div class="play-pause-button clickable"
+              :class="video && video.paused ? 'play' : 'pause'"
+              @click="togglePlay">
+          </div>
         </div>
 
       </div>
