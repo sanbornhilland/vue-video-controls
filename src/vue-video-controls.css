@@ -130,8 +130,6 @@
   content: '';
   height: 20px;
   width: 5px;
-  left: 5px;
-  top: 5px;
   display: inline-block;
   background-color: white;
 }
@@ -192,3 +190,15 @@
 }
 
 /* END FULL SCREEN BUTTON */
+
+
+
+
+/* TIMESTAMP */
+
+.time {
+  color: white;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* END TIMESTAMP*/

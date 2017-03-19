@@ -23,6 +23,9 @@ const template =
           </div>
         </div>
 
+        <div class="time control-element-wrapper">
+          {{ video && video.currentTime | timestamp }} / {{ video && video.duration | timestamp }}
+        </div>
       </div>
 
       <div class="buttons-right-side-wrapper">
@@ -63,7 +66,9 @@ Vue.component('video-controls', {
       show: true,
       video: undefined,
       playedPercentage: 0,
-      bufferedPercentage: 0
+      bufferedPercentage: 0,
+      runningTime: 0,
+      totalTime: 0
     }
   },
 
@@ -93,7 +98,7 @@ Vue.component('video-controls', {
       else if (this.$el.webkitRequestFullscreen)
         this.$el.webkitRequestFullscreen()
       else
-        console.log('Your shitty half-baked polyfill doesn not work in this browser')
+        console.log('Your shitty half-baked polyfill does not work in this browser')
     },
 
     updatePlayedPercentage () {
@@ -126,7 +131,17 @@ Vue.component('video-controls', {
       this.video.currentTime = this.video.duration * playFromPercent
     }
   }
+})
 
+Vue.filter('timestamp', (time) => {
+  const durationInMinutes = time / 60
+  let seconds = Math.floor((time % 60)) || 0
+
+  seconds = seconds < 10 ? `0${seconds}` : seconds
+
+  const minutes = Math.floor(durationInMinutes) || 0
+
+  return `${minutes}:${seconds}`
 })
 
 const videoControls = new Vue({
