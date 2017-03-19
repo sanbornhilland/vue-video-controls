@@ -8,7 +8,7 @@ const template =
       <div class="progress-bar-total"></div>
       <div class="progress-bar-buffered" :style="{ width: bufferedPercentage + '%' }"></div>
       <div class="progress-bar-played" :style="{ width: playedPercentage + '%'}">
-        <div class="progress-bar-scrubber"></div>
+        <div class="progress-bar-scrubber" @mousedown.stop="startSeek" ></div>
       </div>
     </div>
 
@@ -106,6 +106,21 @@ Vue.component('video-controls', {
       }
 
       this.bufferedPercentage = progress * 100
+    },
+
+    startSeek () {
+      document.addEventListener('mousemove', this.seek)
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', this.seek)
+      })
+    },
+
+    seek (event) {
+      const timeline = this.$el.querySelector('.progress-bar-total')
+      const timelineLeft = timeline.getBoundingClientRect().left
+      const mouseFromTimelineLeft = event.clientX - timelineLeft
+      const playFromPercent = mouseFromTimelineLeft / timeline.offsetWidth
+      this.video.currentTime = this.video.duration * playFromPercent
     }
   }
 
