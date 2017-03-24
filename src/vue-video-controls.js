@@ -23,6 +23,15 @@ const template =
           </div>
         </div>
 
+        <div class="volume-slider-wrapper control-element-wrapper clickable">
+          <div class="volume-slider">
+            <div class="volume-slider-volume" :style="{ width: volumePercentage + '%' }">
+              <div class="volume-scrubber" @mousedown.stop="startVolumeScrubbing"></div>
+            </div>
+            <div class="volume-slider-total"></div>
+          </div>
+        </div>
+
         <div class="time control-element-wrapper">
           {{ video && video.currentTime | timestamp }} / {{ video && video.duration | timestamp }}
         </div>
@@ -51,7 +60,10 @@ Vue.component('video-controls', {
 
     window.video = this.video; // Attach for easy debugging.
 
-    video.addEventListener('pause', this.showControls);
+    this.video.addEventListener('pause', this.showControls)
+
+    this.setVolume()
+    this.video.addEventListener('volumechange', this.setVolume)
 
     // Seems a little blunt but timeupdate doesn't fire that
     // often so this seems to produce a smoother slider.
@@ -68,7 +80,8 @@ Vue.component('video-controls', {
       playedPercentage: 0,
       bufferedPercentage: 0,
       runningTime: 0,
-      totalTime: 0
+      totalTime: 0,
+      volumePercentage: 0
     }
   },
 
@@ -129,6 +142,27 @@ Vue.component('video-controls', {
       const mouseFromTimelineLeft = event.clientX - timelineLeft
       const playFromPercent = mouseFromTimelineLeft / timeline.offsetWidth
       this.video.currentTime = this.video.duration * playFromPercent
+    },
+
+    startVolumeScrubbing () {
+      document.addEventListener('mousemove', this.setVolumeByScrubberPosition)
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', this.setVolumeByScrubberPosition)
+      })
+    },
+
+    setVolumeByScrubberPosition (event) {
+      const volumeTotal = this.$el.querySelector('.volume-slider-total')
+      const volumeTotalLeft = volumeTotal.getBoundingClientRect().left
+      const mouseFromVolumeTotalLeft = event.clientX - volumeTotalLeft
+      const volume = mouseFromVolumeTotalLeft / volumeTotal.offsetWidth
+
+      if (volume >= 0 && volume <= 1)
+        this.video.volume = volume
+    },
+
+    setVolume () {
+      this.volumePercentage = this.video.muted ? 0 : this.video.volume * 100
     }
   }
 })
