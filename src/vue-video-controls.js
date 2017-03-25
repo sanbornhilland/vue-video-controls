@@ -8,7 +8,7 @@ const template =
       <div class="progress-bar-total"></div>
       <div class="progress-bar-buffered" :style="{ width: bufferedPercentage + '%' }"></div>
       <div class="progress-bar-played" :style="{ width: playedPercentage + '%'}">
-        <div class="progress-bar-scrubber" @mousedown.stop="startSeek" ></div>
+        <div class="progress-bar-scrubber" @mousedown.stop="onSlide(seek)" ></div>
       </div>
     </div>
 
@@ -26,7 +26,8 @@ const template =
         <div class="volume-slider-wrapper control-element-wrapper clickable">
           <div class="volume-slider">
             <div class="volume-slider-volume" :style="{ width: volumePercentage + '%' }">
-              <div class="volume-scrubber" @mousedown.stop="startVolumeScrubbing"></div>
+              <div class="volume-scrubber"
+                   @mousedown.stop="onSlide(setVolumeByScrubberPosition)"></div>
             </div>
             <div class="volume-slider-total"></div>
           </div>
@@ -129,33 +130,23 @@ Vue.component('video-controls', {
       this.bufferedPercentage = progress * 100
     },
 
-    startSeek () {
-      document.addEventListener('mousemove', this.seek)
+    onSlide (callback) {
+      document.addEventListener('mousemove', callback)
       document.addEventListener('mouseup', () => {
-        document.removeEventListener('mousemove', this.seek)
+        document.removeEventListener('mousemove', callback)
       })
     },
 
     seek (event) {
-      const timeline = this.$el.querySelector('.progress-bar-total')
-      const timelineLeft = timeline.getBoundingClientRect().left
-      const mouseFromTimelineLeft = event.clientX - timelineLeft
-      const playFromPercent = mouseFromTimelineLeft / timeline.offsetWidth
+      const playFromPercent =
+          this.getMousePositionFromLeftInPercentage('.progress-bar-total', event.clientX)
+
       this.video.currentTime = this.video.duration * playFromPercent
     },
 
-    startVolumeScrubbing () {
-      document.addEventListener('mousemove', this.setVolumeByScrubberPosition)
-      document.addEventListener('mouseup', () => {
-        document.removeEventListener('mousemove', this.setVolumeByScrubberPosition)
-      })
-    },
-
     setVolumeByScrubberPosition (event) {
-      const volumeTotal = this.$el.querySelector('.volume-slider-total')
-      const volumeTotalLeft = volumeTotal.getBoundingClientRect().left
-      const mouseFromVolumeTotalLeft = event.clientX - volumeTotalLeft
-      const volume = mouseFromVolumeTotalLeft / volumeTotal.offsetWidth
+      const volume =
+          this.getMousePositionFromLeftInPercentage('.volume-slider-total', event.clientX)
 
       if (volume >= 0 && volume <= 1)
         this.video.volume = volume
@@ -163,6 +154,22 @@ Vue.component('video-controls', {
 
     setVolume () {
       this.volumePercentage = this.video.muted ? 0 : this.video.volume * 100
+    },
+
+    getMousePositionFromLeftInPercentage (selector, clientX) {
+      const element = this.$el.querySelector(selector)
+      const mouseFromElementLeft =
+          this.getMousePositionFromLeftInPixels(element, clientX)
+      const positionFromLeftInPercentage = mouseFromElementLeft / element.offsetWidth
+
+      return positionFromLeftInPercentage
+    },
+
+    getMousePositionFromLeftInPixels (element, clientX) {
+      const elementLeft = element.getBoundingClientRect().left
+      const mouseFromElementLeft = clientX - elementLeft
+
+      return mouseFromElementLeft
     }
   }
 })
