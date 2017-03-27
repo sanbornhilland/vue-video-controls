@@ -6,8 +6,8 @@ const template =
   <div class="controls-wrapper" v-bind:class="{ show: show }" @click.stop="">
     <div class="progress-bar clickable" @click="seek($event)">
       <div class="progress-bar-total"></div>
-      <div class="progress-bar-buffered" :style="{ width: bufferedPercentage + '%' }"></div>
-      <div class="progress-bar-played" :style="{ width: playedPercentage + '%'}">
+      <div class="progress-bar-buffered" :style="progressBarBufferedStyle"></div>
+      <div class="progress-bar-played" :style="progressBarPlayedStyle">
         <div class="progress-bar-scrubber" @mousedown.stop="onSlide(seek)" ></div>
       </div>
     </div>
@@ -25,7 +25,7 @@ const template =
 
         <div class="volume-slider-wrapper control-element-wrapper clickable">
           <div class="volume-slider">
-            <div class="volume-slider-volume" :style="{ width: volumePercentage + '%' }">
+            <div class="volume-slider-volume" :style="volumeSliderStyle">
               <div class="volume-scrubber"
                    @mousedown.stop="onSlide(setVolumeByScrubberPosition)"></div>
             </div>
@@ -83,6 +83,26 @@ Vue.component('video-controls', {
       runningTime: 0,
       totalTime: 0,
       volumePercentage: 0
+    }
+  },
+
+  computed: {
+    progressBarBufferedStyle () {
+      return {
+        width: `${this.bufferedPercentage}%`
+      }
+    },
+
+    progressBarPlayedStyle () {
+      return {
+        width: `${this.playedPercentage}%`
+      }
+    },
+
+    volumeSliderStyle () {
+      return {
+        width: `${this.volumePercentage}%`
+      }
     }
   },
 
