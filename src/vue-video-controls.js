@@ -204,7 +204,3 @@ Vue.filter('timestamp', (time) => {
 
   return `${minutes}:${seconds}`
 })
-
-const videoControls = new Vue({
-  el: '#vue-mount'
-})
