@@ -2,7 +2,7 @@
   "name": "vue-video-controls",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/vue-video-controls.js",
   "scripts": {
     "test": "test"
   },
